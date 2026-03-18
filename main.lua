@@ -8,10 +8,6 @@ SMODS.Atlas({
 	py = 95,
 })
 
--- Magic, Nebula, Ghost, Zodiac need work
-
--- Abandoned, Anaglyph
-
 --Region
 local DECK_DATA = {
     {
@@ -121,7 +117,7 @@ local DECK_DATA = {
         stake = 8,
         pos = {x = 3, y = 0},
         config = {
-            -- consumeable_slot = 1,
+            consumeable_slot = 1,
         },
         text = {
             "Start run {C:red}without{} the",
@@ -140,6 +136,8 @@ local DECK_DATA = {
                     local display_name = card_data and card_data.name or "(unknown)"
                     print(display_name .. " (" .. 'v_telescope' .. ") BANNED")
                     -- G.GAME.shop_vouchers = nil
+                    print("MICROSCOPE VOUCHER ACTIVE")
+                    G.GAME.microscope_active = true
                     return true
                 end
             }))
@@ -420,11 +418,58 @@ local function register_decks(deck_data)
             params.unlock_condition = deck.unlock_condition
         end
 
+        if deck.apply_to_run then
+            params.apply_to_run = deck.apply_to_run
+        end
+
         SMODS.Back:take_ownership(deck.key, params)
     end
 end
 
 register_decks(DECK_DATA)
+
+SMODS.current_mod.modify_card_pool = function(self, pool, context)
+    print("=== MODIFY CARD POOL TRIGGERED ===")
+    if not G.GAME.microscope_active then return pool end
+
+    if context and context.source == 'celestial_pack' then
+        print("=== CELESTIAL PACK FILTER TRIGGERED ===")
+
+        local most_played = G.GAME.current_round.most_played_hand
+        print("Most played hand:", most_played)
+
+        for _, key in ipairs(pool) do
+            local c = G.P_CENTERS[key]
+            if c and c.set == "Planet" then
+                print("Planet in pool:", key, "->", c.config.hand_type)
+            end
+        end
+
+        local new_pool = {}
+
+        for _, key in ipairs(pool) do
+            local c = G.P_CENTERS[key]
+
+            if not (c.set == "Planet" and c.config.hand_type == most_played) then
+                table.insert(new_pool, key)
+            else
+                print("REMOVED:", key)
+            end
+        end
+
+        return new_pool
+    end
+
+    return pool
+end
+
+SMODS.current_mod.config_tab = function()
+	return {n = G.UIT.ROOT, config = {
+		-- config values here, see 'Building a UI' page
+	}, nodes = {
+		-- work your UI wizardry here, see 'Building a UI' page
+	}}
+end
 
 ----------------------------------------------
 ------------MOD CODE END----------------------

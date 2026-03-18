@@ -5,15 +5,6 @@ priority = 1
 
 [[patches]]
 [patches.pattern]
-target = "game.lua"
-pattern = '''v_palette=          {order = 32,    discovered = false, unlocked = false, available = true, cost = 10, name = "Palette", pos = {x=7,y=3}, set = "Voucher", config = {extra = 1}, requires = {'v_paint_brush'},unlock_condition = {type = 'min_hand_size', extra = 5}},
-'''
-position = "after"
-payload = "v_microscope = {order = 100, unlocked = false, visible = true, discovered = true, Name = 'Microscope', pos = {x=3,y=2}, set = 'Voucher', cost = 10, config = {extra = 3}},"
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = "card.lua"
 pattern = '''
 elseif G.GAME.used_vouchers.v_telescope and i == 1 then
