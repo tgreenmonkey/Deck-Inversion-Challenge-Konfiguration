@@ -66,14 +66,6 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "back.lua"
-pattern = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}"
-position = "at"
-payload = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, 1}"
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "back.lua"
 pattern = "G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + self.effect.config.consumable_slot"
 position = "at"
 payload = "G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + self.effect.config.consumable_slot + self.effect.config.add_consumable_slot"
@@ -126,6 +118,14 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = "back.lua"
+pattern = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}"
+position = "at"
+payload = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'p_celestial_normal_1', set = 'Booster'}, 1}"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = "functions/common_events.lua"
 pattern = "if not G.GAME.used_vouchers[v.key] then "
 position = "at"
@@ -150,6 +150,14 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if (not v.config.softlock or G.GAME.hands[v.config.hand_type].played > 0) then"
+position = "at"
+payload = "if (not v.config.softlock or G.GAME.hands[v.config.hand_type].played > 0) and (not G.GAME.microscope_active or G.GAME.current_round.most_played_poker_hand ~= v.config.hand_type) then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = "back.lua"
 pattern = "localize{type = 'descriptions', key = 'deck_locked_stake', set = \"Other\", nodes = loc_nodes, vars = loc_args}"
 position = "after"
@@ -165,6 +173,18 @@ elseif back_config.unlock_condition.type == 'region_win' then
     end
     loc_args = {other_name}
     localize{type = 'descriptions', key = 'deck_locked_win', set = 'Other', nodes = loc_nodes, vars = loc_args}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "local name_text = G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key].name"
+position = "after"
+payload = """
+print("set: ", args.set)
+print("key: ", args.key)
+print("full: ", G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key].name)
+"""
 match_indent = true
 
 [[patches]]

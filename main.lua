@@ -83,7 +83,7 @@ local DECK_DATA = {
         key = "b_magic",
         stake = 8,
         pos = {x = 0, y = 3},
-        config = {},
+        config = {consumables = {'j_scholar', 'j_scholar'}},
         text = {
             "Start run {C:red}without{} the",
             "{C:tarot,T:v_crystal_ball}#1#{} voucher",
@@ -118,11 +118,13 @@ local DECK_DATA = {
         pos = {x = 3, y = 0},
         config = {
             consumeable_slot = 1,
+            booster = "p_celestial_normal_1"
         },
         text = {
-            "Start run {C:red}without{} the",
-            "{C:planet,T:v_telescope}#1#{} voucher",
-            "and with",
+            "{C:red}Never{} receive the planet",
+            "for your most played",
+            "poker hand in {C:attention,T:p_celestial_normal_1}Celestial Packs{},",
+            "but start run with",
             "{C:red}+#2#{} consumable slot",
         },
         unlocked = false,
@@ -428,42 +430,7 @@ end
 
 register_decks(DECK_DATA)
 
-SMODS.current_mod.modify_card_pool = function(self, pool, context)
-    print("=== MODIFY CARD POOL TRIGGERED ===")
-    if not G.GAME.microscope_active then return pool end
-
-    if context and context.source == 'celestial_pack' then
-        print("=== CELESTIAL PACK FILTER TRIGGERED ===")
-
-        local most_played = G.GAME.current_round.most_played_hand
-        print("Most played hand:", most_played)
-
-        for _, key in ipairs(pool) do
-            local c = G.P_CENTERS[key]
-            if c and c.set == "Planet" then
-                print("Planet in pool:", key, "->", c.config.hand_type)
-            end
-        end
-
-        local new_pool = {}
-
-        for _, key in ipairs(pool) do
-            local c = G.P_CENTERS[key]
-
-            if not (c.set == "Planet" and c.config.hand_type == most_played) then
-                table.insert(new_pool, key)
-            else
-                print("REMOVED:", key)
-            end
-        end
-
-        return new_pool
-    end
-
-    return pool
-end
-
-SMODS.current_mod.config_tab = function()
+SMODS.current_mod.config_ta = function()
 	return {n = G.UIT.ROOT, config = {
 		-- config values here, see 'Building a UI' page
 	}, nodes = {
