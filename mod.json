@@ -1,0 +1,14 @@
+{
+	"id": "deck_inversion_challenge_config",
+	"name": "Deck Inversion Challenge Konfiguration",
+	"display_name": "Deck Inversion Challenge Konfiguration",
+	"author": ["Sea", "Man"],
+	"description": "Inverse the decks yay",
+	"prefix": "",
+	"main_file": "main.lua",
+	"priority": 0,
+	"badge_colour": "222222",
+	"badge_text_colour": "999999",
+	"version": "0.0.0",
+	"dependencies": []
+}

@@ -1,0 +1,217 @@
+[manifest]
+version = '1.0.0'
+dump_lua = true
+priority = 1
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''v_palette=          {order = 32,    discovered = false, unlocked = false, available = true, cost = 10, name = "Palette", pos = {x=7,y=3}, set = "Voucher", config = {extra = 1}, requires = {'v_paint_brush'},unlock_condition = {type = 'min_hand_size', extra = 5}},
+'''
+position = "after"
+payload = "v_microscope = {order = 100, unlocked = false, visible = true, discovered = true, Name = 'Microscope', pos = {x=3,y=2}, set = 'Voucher', cost = 10, config = {extra = 3}},"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+elseif G.GAME.used_vouchers.v_telescope and i == 1 then
+    local _planet, _hand, _tally = nil, nil, 0
+    for k, v in ipairs(G.handlist) do
+        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+            _hand = v
+            _tally = G.GAME.hands[v].played
+        end
+    end
+end
+'''
+position = "at"
+payload = """
+if G.GAME.used_vouchers.v_microscope then
+elseif G.GAME.used_vouchers.v_telescope and i == 1 then
+    local _planet, _hand, _tally = nil, nil, 0
+    for k, v in ipairs(G.handlist) do
+        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+            _hand = v
+            _tally = G.GAME.hands[v].played
+        end
+    end
+end
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = '''
+for k, v in pairs(G.playing_cards) do
+    if v.base.suit == 'Clubs' then 
+        v:change_suit('Spades')
+    end
+    if v.base.suit == 'Diamonds' then 
+        v:change_suit('Hearts')
+    end
+end'''
+position = "at"
+payload = '''for k, v in pairs(G.playing_cards) do
+    if v.base.suit == 'Spades' then 
+        v:change_suit('Clubs')
+    end
+    if v.base.suit == 'Hearts' then 
+        v:change_suit('Diamonds')
+    end
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "if self.name == 'Anaglyph Deck' and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then"
+position = "at"
+payload = "if self.name == 'Anaglyph Deck' and args.context == 'eval' and not G.GAME.blind.boss then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}"
+position = "at"
+payload = "elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, 1}"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + self.effect.config.consumable_slot"
+position = "at"
+payload = "G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + self.effect.config.consumable_slot + self.effect.config.add_consumable_slot"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "args.chips = math.floor(tot/2)"
+position = "before"
+payload = '''local mult = args.mult
+local chips = args.chips
+local is_chip_smaller = chips < mult
+local new_chip_value = chips
+local new_mult_value = mult
+local multiplier = 2
+if is_chip_smaller then
+    new_chip_value = math.floor(chips/multiplier)
+    new_mult_value = math.floor(mult + math.ceil(chips/multiplier))
+else
+    new_mult_value = math.floor(mult/multiplier)
+    new_chip_value = math.floor(chips + math.ceil(mult/multiplier))
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "args.chips = math.floor(tot/2)"
+position = "at"
+payload = "args.chips = new_chip_value"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "args.mult = math.floor(tot/2)"
+position = "at"
+payload = "args.mult = new_mult_value"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "add_tag(Tag('tag_double'))"
+position = "at"
+payload = "add_tag(Tag(get_next_tag_key()))"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not G.GAME.used_vouchers[v.key] then "
+position = "at"
+payload = "if not G.GAME.used_vouchers[v.key] and not G.GAME.banned_keys[v.key] then "
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "(not v.min_ante or v.min_ante <= G.GAME.round_resets.ante) then"
+position = "at"
+payload = "(not v.min_ante or v.min_ante <= G.GAME.round_resets.ante) and not G.GAME.banned_keys[v.key] then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif _type == 'Voucher' then _pool[#_pool + 1] = \"v_blank\""
+position = "at"
+payload = "elseif _type == 'Voucher' then _pool[#_pool + 1] = nil"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = "localize{type = 'descriptions', key = 'deck_locked_stake', set = \"Other\", nodes = loc_nodes, vars = loc_args}"
+position = "after"
+payload = '''
+elseif back_config.unlock_condition.type == 'region_win' then
+    local other_name = ''
+    if back_config.unlock_condition.region and back_config.unlock_condition.region == '1' then
+        other_name = 'RED, BLUE, YELLOW, BLACK, PAINTED'
+    elseif back_config.unlock_condition.region and back_config.unlock_condition.region == '2' then
+        other_name = 'MAGIC, NEBULA, GHOST, CHECKERED, ERRATIC'
+    else
+        other_name = 'IDK some decks and shit'
+    end
+    loc_args = {other_name}
+    localize{type = 'descriptions', key = 'deck_locked_win', set = 'Other', nodes = loc_nodes, vars = loc_args}'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''        if G.DISCOVER_TALLIES.planets.tally/G.DISCOVER_TALLIES.planets.of >=1 then 
+            unlock_achievement('astronomy')
+        end
+        if G.DISCOVER_TALLIES.total.tally/G.DISCOVER_TALLIES.total.of >=1 then 
+            unlock_achievement('completionist')
+        end
+    end'''
+position = "after"
+payload = '''
+    if args and ( args.type == 'win_deck' or args.type == 'round_win' ) then
+        local regions ={
+            {'b_red', 'b_blue', 'b_yellow', 'b_black', 'b_painted'},
+            {'b_magic', 'b_nebula', 'b_ghost', 'b_checkered', 'b_erratic'},
+            {'b_green', 'b_abandoned', 'b_zodiac', 'b_anaglyph', 'b_plasma'}
+        }
+
+        for ww, region in ipairs(regions) do
+            local region_completed = true
+            for _, back in ipairs(region) do
+                if get_deck_win_stake(back) == 0 then
+                    region_completed = false
+                    break
+                end
+            end
+            if region_completed and regions[ww + 1] then
+                for _, back2 in ipairs(regions[ww + 1]) do
+                    if not G.P_CENTERS[back2].unlocked then
+                        G.P_CENTERS[back2].unlocked = true
+                        notify_alert(back2, "Back")
+                    end
+                end
+            end
+        end
+    end
+    '''
+match_indent = true
