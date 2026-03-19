@@ -1,10 +1,9 @@
 # Deck Inversion Challenge Konfiguration
 
-
 > [!WARNING]  
 > I do NOT guarantee this mod’s compatibility with other game-changing mods
 
-## In The Begining
+## In The Beginning...
 Deck Inversion Challenge Konfiguration aims to solve the question that has been plaguing our ancestors for years... "What if we took all of the decks in Balatro and inversed their effects?". For centuries, man has been working to achieve this quaint goal. Inventions such as Electricity, Poker, The Computer, and Balatro itself have all been made in pursuit of this goal. But only one being, one singular green monkey had what it took to take all of the effects of the decks in Balatro and inverse them! It took hard work and dedication, but finally after HOURS of work the vision has been achieved! AND NOW YOU... YES YOU can get your hands on it!!!!!
 
 ## Purpose
