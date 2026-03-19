@@ -1,12 +1,20 @@
 # Deck Inversion Challenge Konfiguration
+
+
+> [!WARNING]  
+> I do NOT guarantee this mod’s compatibility with other game-changing mods
+
 ## In The Begining
 Deck Inversion Challenge Konfiguration aims to solve the question that has been plaguing our ancestors for years... "What if we took all of the decks in Balatro and inversed their effects?". For centuries, man has been working to achieve this quaint goal. Inventions such as Electricity, Poker, The Computer, and Balatro itself have all been made in pursuit of this goal. But only one being, one singular green monkey had what it took to take all of the effects of the decks in Balatro and inverse them! It took hard work and dedication, but finally after HOURS of work the vision has been achieved! AND NOW YOU... YES YOU can get your hands on it!!!!!
 
 ## Purpose
 The goal of this was to bring a silly idea from a friend to life, but as the project evolved, it became about trying to capture some of the magic of playing Balatro for the first time! For this reason, I would suggest playing for the first time on a new account with nothing unlocked. I have separated the unlocks in this mod to be in 3 sections, requiring the completion of the previous 5 decks to unlock the next 5. I'm considering changing this to 4/5 in the previous region, but this can give you the time to think about how the remaining decks may have been "inverted". We took a lot of creative liberty in what "inverse" meant in some cases and I hope you get a good chuckle out of them!
 
-## Warning
-Note that if you play with your main account and beat a deck/stake for the first time, it will count towards the non-inversed version of the deck on that account when you load up the game again without the mod enabled. 
+> [!NOTE]  
+> If you play with your main account and beat a deck/stake for the first time, it will count towards the vanilla version of the deck on that account when you load up the game again without the mod
+
+## Unlocks Not Working?
+Win one more round of any deck on any stake and this should unlock the next region assuming unlock requirements are fulfilled!
 
 ## Requirements (will add versions required later)
 * Balatro 
