@@ -31,7 +31,7 @@ If you are a super smart humanoid, then feel free to submit PRs for features you
 
 ## Special Thanks To
 
-(@AdamBennett)[https://github.com/adambennett] : Creator of the Custom Deck Creation Tool
+[@AdamBennett](https://github.com/adambennett) : Creator of the Custom Deck Creation Tool
  Used your inversed assets for the decks! A few creative ideas were sparked by your deck creator mod so thank you very much for your mod please go check it out!
 squirpydirtle : GOAT, Playtester, and Ideas guy
 [@DeveloperRowan](https://github.com/developerrowan) : Creator of the [Amplified Screen Shake](https://github.com/developerrowan/AmplifiedScreenShake) Mod and Playtester
