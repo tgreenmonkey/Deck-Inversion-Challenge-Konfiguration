@@ -83,7 +83,7 @@ local DECK_DATA = {
         key = "b_magic",
         stake = 8,
         pos = {x = 0, y = 3},
-        config = {consumables = {'j_scholar', 'j_scholar'}},
+        config = {consumables = {'j_scholar', 'j_scholar'}, banned_keys = {'v_crystal_ball', 'c_fool'}},
         text = {
             "Start run {C:red}without{} the",
             "{C:tarot,T:v_crystal_ball}#1#{} voucher",
@@ -96,15 +96,6 @@ local DECK_DATA = {
             G.E_MANAGER:add_event(Event({
                 func = function()
                     G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
-                    G.GAME.banned_keys['v_crystal_ball'] = true
-                    local card_data = G.P_CENTERS['v_crystal_ball']
-                    local display_name = card_data and card_data.name or "(unknown)"
-                    print(display_name .. " (" .. 'v_crystal_ball' .. ") BANNED")
-                    
-                    G.GAME.banned_keys['c_fool'] = true
-                    local card_data = G.P_CENTERS['c_fool']
-                    local display_name = card_data and card_data.name or "(unknown)"
-                    print(display_name .. " (" .. 'c_fool' .. ") BANNED")
 
                     return true
                 end
@@ -118,7 +109,8 @@ local DECK_DATA = {
         pos = {x = 3, y = 0},
         config = {
             consumeable_slot = 1,
-            booster = "p_celestial_normal_1"
+            booster = "p_celestial_normal_1",
+            banned_keys = {'v_telescope'}
         },
         text = {
             "{C:red}Never{} receive the planet",
@@ -133,11 +125,7 @@ local DECK_DATA = {
             G.E_MANAGER:add_event(Event({
                 func = function()
                     G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
-                    G.GAME.banned_keys['v_telescope'] = true
-                    local card_data = G.P_CENTERS['v_telescope']
-                    local display_name = card_data and card_data.name or "(unknown)"
-                    print(display_name .. " (" .. 'v_telescope' .. ") BANNED")
-                    -- G.GAME.shop_vouchers = nil
+                    
                     print("MICROSCOPE VOUCHER ACTIVE")
                     G.GAME.microscope_active = true
                     return true
@@ -145,12 +133,13 @@ local DECK_DATA = {
             }))
         end,
     },
+    -- 1862 src/utils.lua
     {
         name = "Ghost Deck",
         key = "b_ghost",
         stake = 8,
         pos = {x = 6, y = 2},
-        config = {voucher='v_omen_globe'},
+        config = {voucher='v_omen_globe', banned_keys = {'c_hex'}},
         text = {
             "{C:spectral}Spectral{} cards may {C:red}not{}",
             "appear in the shop,",
@@ -161,10 +150,8 @@ local DECK_DATA = {
         apply = function()
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    G.GAME.banned_keys['c_hex'] = true
-                    local card_data = G.P_CENTERS['c_hex']
-                    local display_name = card_data and card_data.name or "(unknown)"
-                    print(display_name .. " (" .. 'c_hex' .. ") BANNED")
+                    print("SPECTRAL ACTIVE")
+                    G.GAME.spectrals_can_appear = true
 
                     return true
                 end
@@ -275,7 +262,7 @@ local DECK_DATA = {
         key = "b_abandoned",
         stake = 8,
         pos = {x = 3, y = 3},
-        config = {},
+        config = {force_boss = "bl_plant"},
         text = {
             "Start run with",
             "{C:red}only{} {C:attention}Face Cards",
@@ -295,6 +282,9 @@ local DECK_DATA = {
                     for _, card in ipairs(to_remove) do
                         card:remove()
                     end
+
+                    -- G.FORCE_BOSS = "bl_plant"
+
                     return true
                 end
             }))
@@ -307,6 +297,7 @@ local DECK_DATA = {
         pos = {x = 3, y = 4},
         config = {
             consumeable_slot = 2,
+            banned_keys = {'v_tarot_merchant', 'v_planet_merchant', 'v_overstock_norm'}
         },
         text = {
             "Start run {C:red}without{}",
@@ -323,14 +314,6 @@ local DECK_DATA = {
                     G.GAME.planet_rate = G.GAME.planet_rate * (4/9.6)
                     G.GAME.shop.joker_max = 1
 
-                    G.GAME.banned_keys['v_tarot_merchant'] = true
-                    G.GAME.banned_keys['v_planet_merchant'] = true
-                    G.GAME.banned_keys['v_overstock_norm'] = true
-
-                    print("v_tarot_merchant BANNED")
-                    print("v_planet_merchant BANNED")
-                    print("v_overstock_norm BANNED")
-
                     return true
                 end
             }))
@@ -341,7 +324,7 @@ local DECK_DATA = {
         key = "b_anaglyph",
         stake = 8,
         pos = {x = 2, y = 4},
-        config = {},
+        config = {banned_keys = {'tag_double'}},
         text = {
             "After defeating each",
             "{C:red}not{} {C:attention}Boss Blind{}, gain a",
@@ -349,18 +332,6 @@ local DECK_DATA = {
         },
         unlocked = false,
         unlock_condition = {type = 'region_win', region = '2'},
-        apply = function()
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.banned_keys['tag_double'] = true
-                    local card_data = G.P_CENTERS['tag_double']
-                    local display_name = card_data and card_data.name or "(unknown)"
-                    print(display_name .. " (" .. 'tag_double' .. ") BANNED")
-
-                    return true
-                end
-            }))
-        end,
     },
     {
         name = "Plasma Deck",

@@ -5,35 +5,6 @@ priority = 1
 
 [[patches]]
 [patches.pattern]
-target = "card.lua"
-pattern = '''
-elseif G.GAME.used_vouchers.v_telescope and i == 1 then
-    local _planet, _hand, _tally = nil, nil, 0
-    for k, v in ipairs(G.handlist) do
-        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
-            _hand = v
-            _tally = G.GAME.hands[v].played
-        end
-    end
-end
-'''
-position = "at"
-payload = """
-if G.GAME.used_vouchers.v_microscope then
-elseif G.GAME.used_vouchers.v_telescope and i == 1 then
-    local _planet, _hand, _tally = nil, nil, 0
-    for k, v in ipairs(G.handlist) do
-        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
-            _hand = v
-            _tally = G.GAME.hands[v].played
-        end
-    end
-end
-"""
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = "back.lua"
 pattern = '''
 for k, v in pairs(G.playing_cards) do
@@ -61,6 +32,33 @@ target = "back.lua"
 pattern = "if self.name == 'Anaglyph Deck' and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then"
 position = "at"
 payload = "if self.name == 'Anaglyph Deck' and args.context == 'eval' and not G.GAME.blind.boss then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "back.lua"
+pattern = """if self.effect.config.extra_discard_bonus then 
+        G.GAME.modifiers.money_per_discard = self.effect.config.extra_discard_bonus
+    end"""
+position = "after"
+payload = """if self.effect.config.force_boss then 
+        G.GAME.FORCE_BOSS = self.effect.config.force_boss
+    else
+        G.GAME.FORCE_BOSS = nil
+    end
+    if self.effect.config.banned_keys then
+        for _, key in pairs(self.effect.config.banned_keys) do
+            G.GAME.banned_keys[key] = true
+        end
+    end"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = """if G.FORCE_BOSS then return G.FORCE_BOSS end"""
+position = "after"
+payload = """if G.GAME.FORCE_BOSS then return G.GAME.FORCE_BOSS end"""
 match_indent = true
 
 [[patches]]
@@ -175,16 +173,15 @@ elseif back_config.unlock_condition.type == 'region_win' then
     localize{type = 'descriptions', key = 'deck_locked_win', set = 'Other', nodes = loc_nodes, vars = loc_args}'''
 match_indent = true
 
+
 [[patches]]
 [patches.pattern]
-target = "functions/misc_functions.lua"
-pattern = "local name_text = G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key].name"
-position = "after"
-payload = """
-print("set: ", args.set)
-print("key: ", args.key)
-print("full: ", G.localization.descriptions[(args.set or args.node.config.center.set)][args.key or args.node.config.center.key].name)
-"""
+target = "card.lua"
+pattern = "if booster_obj.create_card and type(booster_obj.create_card) == \"function\" then"
+position = "at"
+payload = """if G.GAME.spectrals_can_appear and pseudorandom('omen_globe') > 0.8 then
+    card = create_card('Spectral', G.pack_cards, nil, nil, true, true, nil, 'test')
+    elseif booster_obj.create_card and type(booster_obj.create_card) == "function" then"""
 match_indent = true
 
 [[patches]]
