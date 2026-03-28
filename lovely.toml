@@ -50,6 +50,9 @@ payload = """if self.effect.config.force_boss then
         for _, key in pairs(self.effect.config.banned_keys) do
             G.GAME.banned_keys[key] = true
         end
+    end
+    if self.effect.config.interest_multiplier then 
+        G.GAME.interest_amount = G.GAME.interest_amount * self.effect.config.interest_multiplier
     end"""
 match_indent = true
 
