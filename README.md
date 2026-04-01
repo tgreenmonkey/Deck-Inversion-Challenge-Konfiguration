@@ -9,8 +9,8 @@ Deck Inversion Challenge Konfigureation aims to solve the question that has been
 ## Purpose
 The goal of this was to bring a silly idea from a friend to life, but as the project evolved, it became about trying to capture some of the magic of playing Balatro for the first time! For this reason, I would suggest playing for the first time on a new account with nothing unlocked. I have separated the unlocks in this mod to be in 3 sections, requiring the completion of the previous 5 decks to unlock the next 5. I'm considering changing this to 4/5 in the previous region, but this can give you the time to think about how the remaining decks may have been "inverted". We took a lot of creative liberty in what "inverse" meant in some cases and I hope you get a good chuckle out of them!
 
-## Warning
-Note that if you play with your main account and beat a deck/stake for the first time, it will count towards the non-inversed version of the deck on that account when you load up the game again. 
+> [!NOTE] 
+> Note that if you play with your main account and beat a deck/stake for the first time, it will count towards the non-inversed version of the deck on that account when you load up the game again. 
 
 ## Requirements (will add versions required later)
 * Balatro 
